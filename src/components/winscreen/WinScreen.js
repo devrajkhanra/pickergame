@@ -9,7 +9,7 @@ const WinScreen = ({ winner, setWinner, setLoser, setCoins, setUsername, usernam
         setUsername(username)
     }
     return (
-        <div className='grid place-items-center mt-20'>
+        <div className='grid place-items-center pt-20'>
 
             <div className='flex flex-row items-center space-x-3'>
                 <p className='font-semibold text-slate-400 text-3xl'>Winner:</p>

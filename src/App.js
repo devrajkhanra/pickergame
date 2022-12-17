@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import GamePlay from './components/gameplay/GamePlay';
@@ -6,6 +7,7 @@ import LostScreen from './components/lostscreen/LostScreen';
 import WinScreen from './components/winscreen/WinScreen';
 
 function App() {
+  const API_URL = 'localhost:3500/'
   const navigate = useNavigate()
 
   // user credential
@@ -27,6 +29,10 @@ function App() {
   // function to handle login submission
   const handleSubmit = (e) => {
     e.preventDefault()
+
+    // const response = await axios.post("/login", {
+    //   username, password
+    // })
 
     //  check if username and password is admin
     if (username === 'admin' && password === 'admin1234') {
@@ -50,15 +56,15 @@ function App() {
   }
 
   // function to handle coin pick
-  const handleCoinPick = (coins) => {
+  const handleCoinPick = async (coins) => {
     setCoins((prevCoins) => prevCoins - coins)
 
     // check if the game is over
     if (coins === 0 || coins < 0) {
-      setLoser(username)
-      setWinner('AI')
       // show the lost screen
-      navigate('/lostScreen', { coins })
+      await navigate('/lostScreen', { coins })
+      await setLoser(username)
+      await setWinner('AI')
       return
     }
 
@@ -76,12 +82,12 @@ function App() {
   }
 
   // function to handle AI's turn
-  const handleAITurn = () => {
+  const handleAITurn = async () => {
 
     // calculate the number of coins for the AI to pick
     let pickcoins = coins % 4
     if (pickcoins === 0) {
-      pickcoins = 1;
+      pickcoins = 1
     }
 
     // decrement the number of coins by the number picked by the AI
@@ -89,11 +95,11 @@ function App() {
 
     // check if the game is over
     if (coins === 0 || coins < 0) {
-      setLoser('AI')
-      setWinner(username)
       // show the lost screen
-      navigate('/winScreen', { coins });
-      return;
+      await navigate('/winScreen', { coins })
+      await setLoser('AI')
+      await setWinner(username)
+      return
     }
 
     // switch back to user's turn
