@@ -7,7 +7,7 @@ import LostScreen from './components/lostscreen/LostScreen';
 import WinScreen from './components/winscreen/WinScreen';
 
 function App() {
-  const API_URL = 'localhost:3500/'
+  const API_URL = 'http://localhost:3500/'
   const navigate = useNavigate()
 
   // user credential
