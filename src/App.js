@@ -14,17 +14,33 @@ function App() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
+  // player & coins
+  const [currentPlayer, setCurrentPlayer] = useState(username)
+  const [coins, setCoins] = useState(21);
+  console.log(coins)
+  // winner & loser
+  const [winner, setWinner] = useState('')
+  const [loser, setLoser] = useState('')
+
   useEffect(() => {
     navigate('/login')
   }, [])
 
-  // player & coins
-  const [currentPlayer, setCurrentPlayer] = useState(username)
-  const [coins, setCoins] = useState(21);
+  useEffect(() => {
+    if (coins <= 0 && currentPlayer === 'AI') {
 
-  // winner & loser
-  const [winner, setWinner] = useState('')
-  const [loser, setLoser] = useState('')
+      navigate('/lostScreen')
+      setLoser(username)
+      setWinner('AI')
+    }
+    else if (coins <= 0 && currentPlayer === username) {
+      navigate('/winScreen')
+      setLoser('AI')
+      setWinner(username)
+    }
+  }, [coins, currentPlayer])
+
+
 
   // function to handle login submission
   const handleSubmit = (e) => {
@@ -60,7 +76,7 @@ function App() {
     setCoins((prevCoins) => prevCoins - coins)
 
     // check if the game is over
-    if (coins === 0 || coins < 0) {
+    if (coins <= 0) {
       // show the lost screen
       await navigate('/lostScreen', { coins })
       await setLoser(username)
@@ -94,8 +110,8 @@ function App() {
     setCoins((prevCoins) => prevCoins - pickcoins);
 
     // check if the game is over
-    if (coins === 0 || coins < 0) {
-      // show the lost screen
+    if (coins <= 0) {
+      // show the win screen
       await navigate('/winScreen', { coins })
       await setLoser('AI')
       await setWinner(username)
