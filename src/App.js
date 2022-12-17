@@ -18,22 +18,25 @@ function App() {
   const [currentPlayer, setCurrentPlayer] = useState(username)
   const [coins, setCoins] = useState(21);
   console.log(coins)
+
   // winner & loser
   const [winner, setWinner] = useState('')
   const [loser, setLoser] = useState('')
 
+  // first time page load
   useEffect(() => {
     navigate('/login')
   }, [])
 
+  // when coin is zero
   useEffect(() => {
-    if (coins <= 0 && currentPlayer === 'AI') {
+    if (coins === 0 && currentPlayer === 'AI') {
 
       navigate('/lostScreen')
       setLoser(username)
       setWinner('AI')
     }
-    else if (coins <= 0 && currentPlayer === username) {
+    if (coins === 0 && currentPlayer === username) {
       navigate('/winScreen')
       setLoser('AI')
       setWinner(username)
@@ -72,28 +75,26 @@ function App() {
   }
 
   // function to handle coin pick
-  const handleCoinPick = async (coins) => {
+  const handleCoinPick = (coins) => {
     setCoins((prevCoins) => prevCoins - coins)
 
-    // check if the game is over
     if (coins <= 0) {
-      // show the lost screen
-      await navigate('/lostScreen', { coins })
-      await setLoser(username)
-      await setWinner('AI')
       return
     }
-
-    // switch to AI's turn
-    if (currentPlayer === 'AI') {
-      setCurrentPlayer(username)
-    }
     else {
-      setCurrentPlayer('AI')
-      setTimeout(() => {
-        handleAITurn()
-      }, 2000);
+      // switch to AI's turn
+      if (currentPlayer === 'AI') {
+        setCurrentPlayer(username)
+      }
+      else {
+        setCurrentPlayer('AI')
+        setTimeout(() => {
+          handleAITurn()
+        }, 2000);
+      }
     }
+
+
 
   }
 
@@ -108,15 +109,6 @@ function App() {
 
     // decrement the number of coins by the number picked by the AI
     setCoins((prevCoins) => prevCoins - pickcoins);
-
-    // check if the game is over
-    if (coins <= 0) {
-      // show the win screen
-      await navigate('/winScreen', { coins })
-      await setLoser('AI')
-      await setWinner(username)
-      return
-    }
 
     // switch back to user's turn
     setCurrentPlayer(username)
