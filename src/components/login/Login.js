@@ -1,9 +1,12 @@
 import React from 'react'
 
-const Login = ({ username, setUsername, password, setPassword, handleSubmit }) => {
+const Login = ({ username, setUsername, password, setPassword, handleSubmit, error }) => {
+
     return (
         <div className='flex flex-col justify-center items-center'>
+
             <h1 className='mt-20 font-semibold text-4xl text-slate-400'>Login</h1>
+            {error && <p>{error}</p>}
             <form className='flex flex-col py-6 border px-6 bg-white' onSubmit={handleSubmit}>
 
                 {/* username */}
@@ -13,6 +16,7 @@ const Login = ({ username, setUsername, password, setPassword, handleSubmit }) =
                     placeholder='username'
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    autoComplete='false'
                     className='ring-2' />
 
                 {/* password */}
@@ -22,6 +26,7 @@ const Login = ({ username, setUsername, password, setPassword, handleSubmit }) =
                     placeholder='password'
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    autoComplete='false'
                     className='ring-2' />
 
                 {/* button */}
