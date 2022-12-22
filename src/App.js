@@ -50,13 +50,12 @@ function App() {
   }
 
 
+
   // gameStart, player, coins & gameState
   const [gameStart, setGameStart] = useState('')
   const [currentPlayer, setCurrentPlayer] = useState(username)
   const [oppositePlayer, setOppositePlayer] = useState('')
   const [coins, setCoins] = useState(21);
-
-
 
   // function to handle username will start the game
   const handleGameStartYes = () => {
@@ -78,18 +77,19 @@ function App() {
   const [win, setWin] = useState('')
   const [lost, setLost] = useState('')
 
+  const handlePlayAgain = () => {
+    setCoins(21)
+    setWinner('')
+    setLoser('')
+    setGameStart('')
+    setUsername(username)
+    setOppositePlayer('AI')
 
+  }
 
   // function to handle coin pick
   const handleCoinPick = async (pickedCoins) => {
     setCoins(currentCoins => currentCoins - pickedCoins)
-
-    // check if game ended
-    if (coins <= 0) {
-
-      return
-    }
-
   }
 
   useEffect(() => {
@@ -121,7 +121,6 @@ function App() {
 
 
   }, [coins])
-  // useEffect(() => { }, [coins])
 
 
   return (
@@ -144,22 +143,14 @@ function App() {
           path='/lostScreen'
           element={<LostScreen
             loser={loser}
-            setLoser={setLoser}
-            setWinner={winner}
-            setCoins={setCoins}
-            setUsername={setUsername}
-            username={username} />} />
+            handlePlayAgain={handlePlayAgain} />} />
 
         {/* Win Screen */}
         <Route
           path='/winScreen'
           element={<WinScreen
             winner={winner}
-            setLoser={setLoser}
-            setWinner={winner}
-            setCoins={setCoins}
-            setUsername={setUsername}
-            username={username} />} />
+            handlePlayAgain={handlePlayAgain} />} />
 
         {/* Login Screen */}
         <Route
