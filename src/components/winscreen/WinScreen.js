@@ -1,13 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const WinScreen = ({ winner, setWinner, setLoser, setCoins, setUsername, username }) => {
-    const linkClick = () => {
-        setCoins(21)
-        setWinner('')
-        setLoser('')
-        setUsername(username)
-    }
+const WinScreen = ({ winner, handlePlayAgain }) => {
+
     return (
         <div className='grid place-items-center pt-20'>
 
@@ -17,7 +12,7 @@ const WinScreen = ({ winner, setWinner, setLoser, setCoins, setUsername, usernam
             </div>
 
             <div className='bg-red-500 text-red-50 p-4 hover:bg-green-500 hover:font-bold mt-4'>
-                <Link to='/' onClick={linkClick}>Play Again</Link>
+                <Link to='/' onClick={handlePlayAgain}>Play Again</Link>
             </div>
         </div >
     )

@@ -4,7 +4,7 @@ const StartGame = ({ handleGameStartYes, handleGameStartNo }) => {
     return (
         <section>
             <div className="font-mono text-orange-800 text-5xl mb-6">
-                Do you want to start the game?
+                Do you want to make the first move?
                 <div className="flex flex-row justify-center mt-9">
                     <button
                         className="bg-green-500 text-white p-3 hover:bg-white hover:text-green-500 hover:ring-1 hover:ring-green-500"
