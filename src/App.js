@@ -3,8 +3,7 @@ import { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import GamePlay from './components/gameplay/GamePlay';
 import Login from './components/login/Login';
-import LostScreen from './components/lostscreen/LostScreen';
-import WinScreen from './components/winscreen/WinScreen';
+import Score from './components/score/Score';
 
 function App() {
   const API_URL = 'http://localhost:3500/user'
@@ -52,6 +51,7 @@ function App() {
 
 
   // gameStart, player, coins & gameState
+  const [gameState, setGameState] = useState(false)
   const [gameStart, setGameStart] = useState('')
   const [currentPlayer, setCurrentPlayer] = useState(username)
   const [oppositePlayer, setOppositePlayer] = useState('')
@@ -84,40 +84,45 @@ function App() {
     setGameStart('')
     setUsername(username)
     setOppositePlayer('AI')
-
   }
 
   // function to handle coin pick
   const handleCoinPick = async (pickedCoins) => {
-    setCoins(currentCoins => currentCoins - pickedCoins)
+    await setCoins(currentCoins => currentCoins - pickedCoins)
   }
 
   useEffect(() => {
 
-    // check if game ended
-    if (coins <= 0) {
-      setLoser(currentPlayer)
-      setWinner(oppositePlayer)
-      currentPlayer === username ? navigate('/lostScreen') : navigate('/winScreen')
-    }
-
-    // change payer on coin pick
+    // change player on coin pick
     if (coins - 1 || coins - 2 || coins - 3 || coins - 4) {
 
-      // change current player's turn
-      currentPlayer === username ?
-        setCurrentPlayer('AI') && setOppositePlayer(username)
-        : setCurrentPlayer(username) && setOppositePlayer('AI')
+      if (currentPlayer === username) {
+        setCurrentPlayer('AI')
+        setOppositePlayer(username)
 
+        // let AI play
+        // if (gameState === true) {
+        //   setTimeout(async () => {
+        //     if (coins > 0) {
+        //       await handleCoinPick(Math.floor(Math.random() * 4) + 1);
+        //     }
+        //   }, 1000);
+        // }
+
+      } else {
+        setCurrentPlayer(username)
+        setOppositePlayer('AI')
+      }
+
+      // check if game ended
+      if (coins < 1) {
+        setLoser(currentPlayer)
+        setWinner(oppositePlayer)
+        setTimeout(() => {
+          navigate('/score')
+        }, 500);
+      }
     }
-
-    // if (currentPlayer === 'AI') {
-    //   setTimeout(async () => {
-    //     if (coins > 0) {
-    //       await handleCoinPick(Math.floor(Math.random() * 4) + 1);
-    //     }
-    //   }, 1000);
-    // }
 
 
   }, [coins])
@@ -138,18 +143,12 @@ function App() {
             currentPlayer={currentPlayer}
             handleCoinPick={handleCoinPick} />} />
 
-        {/* Lost Screen */}
-        <Route
-          path='/lostScreen'
-          element={<LostScreen
-            loser={loser}
-            handlePlayAgain={handlePlayAgain} />} />
-
         {/* Win Screen */}
         <Route
-          path='/winScreen'
-          element={<WinScreen
+          path='/score'
+          element={<Score
             winner={winner}
+            loser={loser}
             handlePlayAgain={handlePlayAgain} />} />
 
         {/* Login Screen */}
